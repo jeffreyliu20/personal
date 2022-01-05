@@ -33,15 +33,14 @@ void selectionSort(int[] ray) {
 }//selectionSort
 
 void insertionSort(int[] ray) {
-  for (int sortEnd = 0; sortEnd < ray.length; sortEnd++) {
-    //int insertVal=sortEnd;
-    for (int pos = sortEnd+1; pos !=0 && insertVal < ray[pos-1];pos++) {
+  for (int sortEnd = 0; sortEnd < ray.length-1; sortEnd++){
+    int pos = sortEnd+1;
     int insertVal = ray[pos];
-    pos = sortEnd+1;
-    if (pos < ray.length) {
-      insertVal = ray[pos];
+    while (pos != 0 && insertVal < ray[pos-1]){
+      ray[pos] = ray[pos-1];
+      pos--;
     }
-    }
+    ray[pos] = insertVal;
   }
 }//insertionSort
 
