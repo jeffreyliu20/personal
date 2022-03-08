@@ -1,5 +1,6 @@
 String target = "hello";
 int[] state;
+char[] storage;
 int GREY=0;
 int YELLOW=1;
 int GREEN=2;
@@ -33,6 +34,11 @@ void drawGrid(int numRows, int numCols) {
   }
 }
 }
+//void updateRow(int rowNum) {
+//  for (int i=0; i<5;i++) {
+//  game[rowNum*5+i]=new Grid(rowx*width/5,rowy*height/6,width/5,height/6,GREEN, 'H');
+//  }
+//}
 String selectWord () {
   String[] wordList = loadStrings("words_reasonable.csv");
   String[] words = split(wordList[0], ',');

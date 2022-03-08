@@ -31,11 +31,11 @@ class Grid {
       fill (#2AED00);
     }
     rect(x,y,rx,ry);
-    textAlign(CENTER);
+    textAlign(CENTER, CENTER);
     textSize(64);
     fill(255);
     println("x"+rx);
     println(ry);
-    text(letter,x+(rx/2),y+(ry*2/3));
+    text(letter,x+(rx/2),y+(ry*3/8));
 }
 }
