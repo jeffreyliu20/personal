@@ -1,29 +1,36 @@
 String target = "hello";
 int[] state;
-char[] storage;
+String[] storage;
+int loc;
 int GREY=0;
 int YELLOW=1;
 int GREEN=2;
 int attempts;
+int running=0;
 Grid game[][];
 
 void setup() {
   state=new int[5];
   size(335, 600);
   background(30);
-  frameRate(60);
-  //println(selectWord());
+  frameRate(1);
+  storage=new String[5];
+  selectWord();
   //println(correct("hello"));
   //compare("hello","hello");
   setupGrid(6,5);
   drawGrid(6,5);
 }
 
+void draw() {
+  drawGrid(6,5);
+  keyReleased();
+}
 void setupGrid (int numRows, int numCols) {
   game=new Grid[numRows][numCols];
   for (int rowy=0; rowy<=numRows-1;rowy++) {
    for (int rowx=0; rowx<=numCols-1;rowx++) {
-     game[rowy][rowx]=new Grid(rowx*width/5,rowy*height/6,width/5,height/6,GREY, 'H');
+     game[rowy][rowx]=new Grid(rowx*width/5,rowy*height/6,width/5,height/6,GREY, ' ');
    }
   }
 }
@@ -34,11 +41,14 @@ void drawGrid(int numRows, int numCols) {
   }
 }
 }
-//void updateRow(int rowNum) {
-//  for (int i=0; i<5;i++) {
-//  game[rowNum*5+i]=new Grid(rowx*width/5,rowy*height/6,width/5,height/6,GREEN, 'H');
-//  }
-//}
+void updateTile(int l,char let) {
+  //game[attempts][l].cstate=state[l];
+  game[attempts][l].letter=let;
+  game[attempts][l].display();
+  println(let);
+  storage[l]=str(let);
+  }
+
 String selectWord () {
   String[] wordList = loadStrings("words_reasonable.csv");
   String[] words = split(wordList[0], ',');
@@ -89,4 +99,34 @@ boolean correct (String ans) {
   return false;
 }
 
-//void keyPressed() {
+void keyReleased() {
+  if ((key>=65)&&(key<=90)) {
+   updateTile (loc,key);
+  }
+  if ((key>=97)&&(key<=122)) {
+    updateTile (loc,char(key-32));
+    key=1;
+    loc+=1;
+  }
+  if ((key==8) || (key==127)) {
+    updateTile (loc-1,char(32));
+    key=1;
+    loc-=1;
+  }
+  if (key==ENTER) {
+    String tmp = " ";
+    tmp=join(storage, '*');
+    tmp=tmp.replaceAll("[^a-zA-Z]","");
+    if (verify(tmp)) {
+      for (int i=0; i<=5;i++) {
+      state[i]=GREEN;
+      }
+      running=2;
+    }
+    else {
+      compare(tmp,target);
+    }
+    attempts+=1;
+    loc=0;
+  }
+}
