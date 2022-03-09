@@ -1,4 +1,4 @@
-String target = "hello";
+String target = "HELLO";
 int[] state;
 String[] storage;
 int loc;
@@ -16,7 +16,7 @@ void setup() {
   frameRate(1);
   storage=new String[5];
   selectWord();
-  //println(correct("hello"));
+  println(correct("hello"));
   //compare("hello","hello");
   setupGrid(6,5);
   drawGrid(6,5);
@@ -42,11 +42,16 @@ void drawGrid(int numRows, int numCols) {
 }
 }
 void updateTile(int l,char let) {
-  //game[attempts][l].cstate=state[l];
+  game[attempts][l].cstate=state[l];
   game[attempts][l].letter=let;
   game[attempts][l].display();
-  println(let);
   storage[l]=str(let);
+  }
+  void updateAns(int l) {
+  game[attempts][l].cstate=state[l];
+  //game[attempts][l].letter=let;
+  game[attempts][l].display();
+  //storage[l]=str(let);
   }
 
 String selectWord () {
@@ -72,11 +77,13 @@ boolean verify (String answer) {
   }
 
 void compare (String targetWord, String submission) {
+  submission=submission.toLowerCase();
   String[] targetChars = targetWord.split("");
   String[] answerChars = submission.split("");
   for (int i=0; i <5; i++) {
     for (int r=0; r <5; r++) {
     if (answerChars[i].equals(targetChars[r])) {
+      println(answerChars[i]);
       state[i]=YELLOW;
     }
     }
@@ -113,20 +120,19 @@ void keyReleased() {
     key=1;
     loc-=1;
   }
-  if (key==ENTER) {
+  if ((key==ENTER)&&(loc==5)) {
     String tmp = " ";
     tmp=join(storage, '*');
     tmp=tmp.replaceAll("[^a-zA-Z]","");
-    if (verify(tmp)) {
-      for (int i=0; i<=5;i++) {
-      state[i]=GREEN;
-      }
-      running=2;
-    }
-    else {
+    tmp=tmp.toLowerCase();
+    println(tmp);
+      for (int i=0; i<=6;i++) {
+        loc=0;
       compare(tmp,target);
-    }
+      updateAns (loc);
+      }
     attempts+=1;
     loc=0;
+    key=1;
   }
 }
