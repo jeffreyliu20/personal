@@ -1,4 +1,4 @@
-String target = "MONTH";
+String target = " ";
 String tmp = " ";
 int[] state = {2, 2, 1, 1, 0};
 String[] storage;
@@ -16,11 +16,9 @@ void setup() {
   state=new int[5];
   size(335, 600);
   background(30);
-  frameRate(1);
+  frameRate(2);
   storage=new String[5];
-  //selectWord();
-  println(verify("hello"));
-  println(compare1("hello", "hello"));
+  selectWord();
   setupGrid(6, 5);
   drawGrid(6, 5);
 }
@@ -158,7 +156,7 @@ void keyReleased() {
     key=1;
     loc+=1;
   }
-  if (((key==8) || (key==127))&&(loc<=5)) {
+  if (((key==8) || (key==127))&&(loc<=5)&&(loc>=1)) {
     updateTile (loc-1, char(32));
     key=1;
     loc-=1;
