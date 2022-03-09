@@ -1,4 +1,5 @@
 String target = "HELLO";
+String tmp = "HELLO";
 int[] state;
 String[] storage;
 int loc;
@@ -16,8 +17,8 @@ void setup() {
   frameRate(1);
   storage=new String[5];
   selectWord();
-  println(correct("hello"));
-  //compare("hello","hello");
+  println(verify("hello"));
+  println(compare1("hello","hello"));
   setupGrid(6,5);
   drawGrid(6,5);
 }
@@ -65,16 +66,33 @@ String selectWord () {
 boolean verify (String answer) {
   String[] wordList = loadStrings("words.csv");
   String[] words = split(wordList[0], ',');
-  for (int i=0; i<=words.length;i++) {
+  for (int i=0; i<words.length;i++) {
   if (answer.equals(words[i])) {
     return true;
   }
-  else {
-  return false;
-  }
   }
   return false;
+  
+  //return false;
   }
+  
+boolean compare1 (String targetWord, String submission) {
+  submission=submission.toLowerCase();
+  String[] targetChars = targetWord.split("");
+  String[] answerChars = submission.split("");
+  for (int i=0; i <5; i++) {
+    for (int r=0; r <5; r++) {
+    if (answerChars[i].equals(targetChars[r])) {
+      println(answerChars[i]);
+      return false;
+    }
+    }
+    if (targetChars[i].equals(answerChars[i])){
+    return true;
+    }
+  }
+  return false;
+}
 
 void compare (String targetWord, String submission) {
   submission=submission.toLowerCase();
@@ -106,33 +124,39 @@ boolean correct (String ans) {
   return false;
 }
 
+String createAns() {
+  String tmp = " ";
+    tmp=join(storage, '*');
+    tmp=tmp.replaceAll("[^a-zA-Z]","");
+    tmp=tmp.toLowerCase();
+    return tmp;
+}
 void keyReleased() {
-  if ((key>=65)&&(key<=90)) {
+  if (((key>=65)&&(key<=90))&&(loc<5)) {
    updateTile (loc,key);
   }
-  if ((key>=97)&&(key<=122)) {
+  if (((key>=97)&&(key<=122))&&(loc<5)) {
     updateTile (loc,char(key-32));
     key=1;
     loc+=1;
   }
-  if ((key==8) || (key==127)) {
+  if (((key==8) || (key==127))&&(loc<=5)) {
     updateTile (loc-1,char(32));
     key=1;
     loc-=1;
   }
   if ((key==ENTER)&&(loc==5)) {
-    String tmp = " ";
-    tmp=join(storage, '*');
-    tmp=tmp.replaceAll("[^a-zA-Z]","");
-    tmp=tmp.toLowerCase();
-    println(tmp);
+    tmp=createAns();
+    if (verify(tmp)) {
       for (int i=0; i<=6;i++) {
         loc=0;
       compare(tmp,target);
+      print(state[0]);
       updateAns (loc);
       }
     attempts+=1;
     loc=0;
     key=1;
+  }
   }
 }
